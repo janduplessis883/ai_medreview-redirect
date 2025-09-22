@@ -13,7 +13,7 @@ app = Flask(__name__)
 sia = SentimentIntensityAnalyzer()
 
 GOOGLE_REVIEW_URL = os.environ["GOOGLE_REVIEW_URL"]        # put yours in Render env-vars
-THANK_YOU_URL     = os.environ.get("THANK_YOU_URL", "/static/thanks.html")
+THANK_YOU_URL     = os.environ.get("THANK_YOU_URL", "thanks.html")
 
 @app.route("/review")
 def review():
