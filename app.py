@@ -28,7 +28,7 @@ def review():
         return redirect(THANK_YOU_URL)
 
     score = sia.polarity_scores(feedback)["compound"]
-    dest  = GOOGLE_REVIEW_URL if score >= 0.05 else THANK_YOU_URL
+    dest  = GOOGLE_REVIEW_URL if score >= 0.4 else THANK_YOU_URL
 
     # Log the required information
     logging.info(f"Freetext: '{feedback}', Surgery: '{surgery}', Sentiment Score: {score}, Output: '{dest}'")
