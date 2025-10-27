@@ -11,7 +11,7 @@ else: ssl._create_default_https_context = _create_unverified_https_context
 nltk.download('vader_lexicon', quiet=True)
 
 # Configure logging
-logging.basicConfig(filename='app.log', level=logging.INFO,
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
