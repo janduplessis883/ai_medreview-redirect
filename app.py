@@ -17,8 +17,8 @@ logging.basicConfig(level=logging.INFO,
 app = Flask(__name__)
 sia = SentimentIntensityAnalyzer()
 
-HEALTHPARTNERS_GOOGLE_REVIEW_URL = os.environ["GOOGLE_REVIEW_URL"]
-STANHOPE_GOOGLE_REVIEW_URL = os.environ["GOOGLE_REVIEW_URL"]        # put yours in Render env-vars
+HEALTHPARTNERS_GOOGLE_REVIEW_URL = os.environ["HEALTHPARTNERS_GOOGLE_REVIEW_URL"]
+STANHOPE_GOOGLE_REVIEW_URL = os.environ["STANHOPE_GOOGLE_REVIEW_URL"]        # put yours in Render env-vars
 THANK_YOU_URL     = os.environ.get("THANK_YOU_URL", "/static/thanks.html")
 
 @app.route("/review")
