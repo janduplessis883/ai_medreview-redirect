@@ -53,9 +53,9 @@ def review():
     score = sia.polarity_scores(feedback)["compound"]
     
     if surgery == "Health-Partners-at-Violet-Melchett":
-        dest = HEALTHPARTNERS_GOOGLE_REVIEW_URL if score >= 0.4 else THANK_YOU_URL
+        dest = HEALTHPARTNERS_GOOGLE_REVIEW_URL if score >= 0.65 else THANK_YOU_URL
     elif surgery == "Stanhope-Mews-Surgery":
-        dest = STANHOPE_GOOGLE_REVIEW_URL if score >= 0.4 else THANK_YOU_URL
+        dest = STANHOPE_GOOGLE_REVIEW_URL if score >= 0.65 else THANK_YOU_URL
     else:
         dest = THANK_YOU_URL
     
@@ -63,7 +63,7 @@ def review():
     logging.info(f"Freetext: '{feedback}', Surgery: '{surgery}', Sentiment Score: {score}, Output: '{dest}'")
     
     # Log to Telegram
-    action = "→ Google Review" if score >= 0.4 else "→ Thank You"
+    action = "→ Google Review" if score >= 0.65 else "→ Thank You"
     telegram_msg = f"""
 <b>🟡 New Feedback</b>
 <b>Surgery:</b> {surgery}
