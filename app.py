@@ -17,7 +17,8 @@ logging.basicConfig(level=logging.INFO,
 app = Flask(__name__)
 sia = SentimentIntensityAnalyzer()
 
-GOOGLE_REVIEW_URL = os.environ["GOOGLE_REVIEW_URL"]        # put yours in Render env-vars
+HEALTHPARTNERS_GOOGLE_REVIEW_URL = os.environ["GOOGLE_REVIEW_URL"]
+STANHOPE_GOOGLE_REVIEW_URL = os.environ["GOOGLE_REVIEW_URL"]        # put yours in Render env-vars
 THANK_YOU_URL     = os.environ.get("THANK_YOU_URL", "/static/thanks.html")
 
 @app.route("/review")
@@ -28,7 +29,11 @@ def review():
         return redirect(THANK_YOU_URL)
 
     score = sia.polarity_scores(feedback)["compound"]
-    dest  = GOOGLE_REVIEW_URL if score >= 0.4 else THANK_YOU_URL
+
+    if surgery.lower() == "Health-Partners-at-Violet=Melchett":        # deliberate typo to test default
+        dest  = HEALTHPARTNERS_GOOGLE_REVIEW_URL if score >= 0.4 else THANK_YOU_URL
+    elif surgery == "Stanhope-Mews-Surgery":
+        dest  = STANHOPE_GOOGLE_REVIEW_URL if score >= 0.4 else THANK_YOU_URL
 
     # Log the required information
     logging.info(f"Freetext: '{feedback}', Surgery: '{surgery}', Sentiment Score: {score}, Output: '{dest}'")
