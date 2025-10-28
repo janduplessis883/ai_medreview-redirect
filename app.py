@@ -65,7 +65,7 @@ def review():
     # Log to Telegram
     action = "→ Google Review" if score >= 0.4 else "→ Thank You"
     telegram_msg = f"""
-<b>New Feedback</b>
+<b>🟡 New Feedback</b>
 <b>Surgery:</b> {surgery}
 <b>Sentiment:</b> {score:.3f} {action}
 <b>Feedback:</b> {feedback}
