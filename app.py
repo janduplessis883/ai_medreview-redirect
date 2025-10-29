@@ -10,7 +10,6 @@ except AttributeError: pass
 else: ssl._create_default_https_context = _create_unverified_https_context
 nltk.download('vader_lexicon', quiet=True)
 
-from sentiment_analyser import get_sentiment_score
 
 # Configure logging
 logging.basicConfig(level=logging.INFO,
@@ -53,8 +52,7 @@ def review():
     if not feedback:
         return redirect(THANK_YOU_URL)
 
-    score = get_sentiment_score(feedback)
-    # score = sia.polarity_scores(feedback)["compound"]
+    score = sia.polarity_scores(feedback)["compound"]
 
     if surgery == "Health-Partners-at-Violet-Melchett":
         dest = HEALTHPARTNERS_GOOGLE_REVIEW_URL if score >= 0.70 else THANK_YOU_URL
