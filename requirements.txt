@@ -4,3 +4,4 @@ nltk==3.8.1
 vaderSentiment==3.3.2
 requests
 transformers==4.37.0
+pytorch
