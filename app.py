@@ -10,6 +10,8 @@ except AttributeError: pass
 else: ssl._create_default_https_context = _create_unverified_https_context
 nltk.download('vader_lexicon', quiet=True)
 
+from sentiment_analyser import get_sentiment_score
+
 # Configure logging
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -29,7 +31,7 @@ def send_telegram_message(message):
     """Send a message to Telegram. Non-blocking, catches errors."""
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
         return  # Silently skip if not configured
-    
+
     try:
         url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
         payload = {
@@ -46,24 +48,26 @@ def send_telegram_message(message):
 def review():
     surgery  = request.args.get("surgery",  "unknown")
     feedback = request.args.get("feedback", "")
-    
+
+
     if not feedback:
         return redirect(THANK_YOU_URL)
-    
-    score = sia.polarity_scores(feedback)["compound"]
-    
+
+    score = get_sentiment_score(feedback)
+    # score = sia.polarity_scores(feedback)["compound"]
+
     if surgery == "Health-Partners-at-Violet-Melchett":
-        dest = HEALTHPARTNERS_GOOGLE_REVIEW_URL if score >= 0.65 else THANK_YOU_URL
+        dest = HEALTHPARTNERS_GOOGLE_REVIEW_URL if score >= 0.70 else THANK_YOU_URL
     elif surgery == "Stanhope-Mews-Surgery":
-        dest = STANHOPE_GOOGLE_REVIEW_URL if score >= 0.65 else THANK_YOU_URL
+        dest = STANHOPE_GOOGLE_REVIEW_URL if score >= 0.70 else THANK_YOU_URL
     else:
         dest = THANK_YOU_URL
-    
+
     # Log to application logs
     logging.info(f"Freetext: '{feedback}', Surgery: '{surgery}', Sentiment Score: {score}, Output: '{dest}'")
-    
+
     # Log to Telegram
-    action = "→ Google Review" if score >= 0.65 else "→ Thank You"
+    action = "→ Google Review" if score >= 0.70 else "→ Thank You"
     telegram_msg = f"""
 <b>🟡 New Feedback</b>
 <b>Surgery:</b> {surgery}
@@ -71,9 +75,9 @@ def review():
 <b>Feedback:</b> {feedback}
 """.strip()
     send_telegram_message(telegram_msg)
-    
+
     return redirect(dest)
 
 @app.route("/")
-def ok(): 
+def ok():
     return "ok"
