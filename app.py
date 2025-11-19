@@ -21,6 +21,8 @@ sia = SentimentIntensityAnalyzer()
 HEALTHPARTNERS_GOOGLE_REVIEW_URL = os.environ["HEALTHPARTNERS_GOOGLE_REVIEW_URL"]
 STANHOPE_GOOGLE_REVIEW_URL = os.environ["STANHOPE_GOOGLE_REVIEW_URL"]
 THANK_YOU_URL = os.environ.get("THANK_YOU_URL", "/static/thanks.html")
+GOOGLE_REVIEW_REDIRECT_PAGE = "/static/google_review.html"
+
 
 # Telegram configuration
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
@@ -54,15 +56,25 @@ def review():
 
     score = sia.polarity_scores(feedback)["compound"]
 
-    if surgery == "Health-Partners-at-Violet-Melchett":
-        dest = HEALTHPARTNERS_GOOGLE_REVIEW_URL if score >= 0.70 else THANK_YOU_URL
-    elif surgery == "Stanhope-Mews-Surgery":
-        dest = STANHOPE_GOOGLE_REVIEW_URL if score >= 0.70 else THANK_YOU_URL
+    google_review_url = None
+    if score >= 0.70:
+        if surgery == "Health-Partners-at-Violet-Melchett":
+            google_review_url = HEALTHPARTNERS_GOOGLE_REVIEW_URL
+        elif surgery == "Stanhope-Mews-Surgery":
+            google_review_url = STANHOPE_GOOGLE_REVIEW_URL
+
+    if google_review_url:
+        # Before redirecting to the review page, we show an intermediate page
+        dest = f"{GOOGLE_REVIEW_REDIRECT_PAGE}?dest={urllib.parse.quote(google_review_url)}"
     else:
         dest = THANK_YOU_URL
 
+
     # Log to application logs
-    logging.info(f"Freetext: '{feedback}', Surgery: '{surgery}', Sentiment Score: {score}, Output: '{dest}'")
+    #
+    # N.B. We log the ultimate destination, not the intermediate one
+    log_dest = google_review_url or dest
+    logging.info(f"Freetext: '{feedback}', Surgery: '{surgery}', Sentiment Score: {score}, Output: '{log_dest}'")
 
     # Log to Telegram
     action = "→ Google Review" if score >= 0.70 else "→ Thank You"

@@ -67,9 +67,9 @@
     <div class="container">
         <a href="https://www.nhs.uk/nhs-app/" target="_blank"><img src="NHSapp.png" alt="NHS app" class="header-image"></a>
         <div class="content">
-            <h1>Thank you for your feedback!</h1>
-            <p>We <strong>truly appreciate</strong> you taking the time to share your thoughts with us.</p>
-            <p>Your feedback helps us understand what we're doing well and where we can improve to provide you with the best possible care.</p>
+            <h1>We'd love to hear more from you!</h1>
+            <p>Thank you for your valuable feedback. We would be grateful if you could take a moment to share your experience on our Google review page.</p>
+            <p>You will be redirected in <strong id="countdown">5</strong> seconds...</p>
             <p>Warm regards,</p>
             <p><strong>Your GP Practice Team</strong></p>
         </div>
@@ -78,5 +78,22 @@
             <p><a href="mailto:jan.duplessis@nhs.net">Contact us</a> for more information. View our <a href="https://janduplessis.notion.site/Privacy-Notice-52e518a957d04446a5aa5397018ea92d">Privacy Notice</a>.</p>
         </div>
     </div>
+    <script>
+        (function() {
+            const redirectUrl_from_query_param = new URLSearchParams(window.location.search).get('dest');
+            if (redirectUrl_from_query_param) {
+                let seconds = 5;
+                const countdownElement = document.getElementById('countdown');
+                const interval = setInterval(function() {
+                    seconds--;
+                    countdownElement.textContent = seconds;
+                    if (seconds <= 0) {
+                        clearInterval(interval);
+                        window.location.href = redirectUrl_from_query_param;
+                    }
+                }, 1000);
+            }
+        })();
+    </script>
 </body>
 </html>
