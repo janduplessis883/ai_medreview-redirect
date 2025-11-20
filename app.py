@@ -77,7 +77,7 @@ def review():
     logging.info(f"Freetext: '{feedback}', Surgery: '{surgery}', Sentiment Score: {score}, Output: '{log_dest}'")
 
     # Log to Telegram
-    action = "→ Google Review" if score >= 0.70 else "→ Thank You"
+    action = "→ 🟢 Google Review" if google_review_url else "→ 🟠 Thank You"
     telegram_msg = f"""
 <b>🟡 New Feedback</b>
 <b>Surgery:</b> {surgery}
