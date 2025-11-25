@@ -82,7 +82,7 @@
         (function() {
             const redirectUrl_from_query_param = new URLSearchParams(window.location.search).get('dest');
             if (redirectUrl_from_query_param) {
-                let seconds = 5;
+                let seconds = 7;
                 const countdownElement = document.getElementById('countdown');
                 const interval = setInterval(function() {
                     seconds--;
