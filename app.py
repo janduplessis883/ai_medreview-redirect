@@ -79,7 +79,7 @@ def review():
     # Log to Telegram
     action = "→ 🟢 Google Review" if google_review_url else "→ 🟠 Thank You"
     telegram_msg = f"""
-<b>🟡 New Feedback</b>
+<b>💾 New Feedback</b>
 <b>Surgery:</b> {surgery}
 <b>Sentiment:</b> {score:.3f} {action}
 <b>Feedback:</b> {feedback}
